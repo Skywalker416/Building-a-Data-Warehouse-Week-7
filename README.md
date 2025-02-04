@@ -88,7 +88,6 @@ dbt init dbt_project
 
 ---
 
-## 📑 **Interim Documentation**  
 
 ### 📌 **Contributions and Implementation**  
 
