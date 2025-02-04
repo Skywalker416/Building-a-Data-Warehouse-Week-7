@@ -112,8 +112,64 @@ dbt init dbt_project
 ---
 
 ## 🚀 **Next Steps**  
-- **Task 3:** Object detection using YOLO  
-- **Task 4:** Exposing data via FastAPI  
+Task 3: Object Detection Using YOLO
+Approach
+We used YOLOv5 to detect objects in medical-related images (e.g., medical supplies, equipment, etc.).
+Implementation
+📌 Step 1: Install Dependencies
+pip install torch torchvision opencv-python
+
+📌 Step 2: Clone and Set Up YOLOv5
+git clone https://github.com/ultralytics/yolov5.git
+cd yolov5
+pip install -r requirements.txt
+
+📌 Step 3: Run Object Detection on Images
+import torch
+from PIL import Image
+from yolov5 import detect
+
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+
+# Load image
+img = Image.open("medical_image.jpg")
+
+# Detect objects
+results = model(img)
+results.show()
+
+📌 Step 4: Store Detection Results in Database
+ We saved detected object bounding box coordinates, confidence scores, and class labels in a database for further analysis.
+
+Task 4: Exposing Data via FastAPI
+Approach
+We developed a REST API using FastAPI to expose the collected and processed data.
+Implementation
+📌 Step 1: Install FastAPI
+pip install fastapi uvicorn
+
+📌 Step 2: Create API Endpoints (main.py)
+from fastapi import FastAPI
+import sqlite3
+
+app = FastAPI()
+
+@app.get("/medical-data")
+def get_medical_data():
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM medical_data")
+    data = cursor.fetchall()
+    conn.close()
+    return {"data": data}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+📌 Step 3: Run the API
+uvicorn main:app --reload
+ 
 
 ---
 
